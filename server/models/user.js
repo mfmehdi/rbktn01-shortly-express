@@ -1,5 +1,5 @@
-const utils = require('../lib/hashUtils');
-const Model = require('./model');
+const utils = require("../lib/hashUtils");
+const Model = require("./model");
 
 /**
  * Users is a class with methods to interact with the users table, which
@@ -9,7 +9,7 @@ const Model = require('./model');
  */
 class Users extends Model {
   constructor() {
-    super('users');
+    super("users");
   }
 
   /**
@@ -35,7 +35,6 @@ class Users extends Model {
    */
   create({ username, password }) {
     let salt = utils.createRandom32String();
-
     let newUser = {
       username,
       salt,
@@ -44,6 +43,10 @@ class Users extends Model {
 
     return super.create.call(this, newUser);
   }
-}
 
+  getUser(username) {
+    //  console.log("==========================> ", username);
+    return super.get.call(this, { username: username });
+  }
+}
 module.exports = new Users();

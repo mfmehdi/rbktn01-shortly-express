@@ -1,6 +1,6 @@
-const utils = require('../lib/hashUtils');
-const Model = require('./model');
-const Users = require('./user');
+const utils = require("../lib/hashUtils");
+const Model = require("./model");
+const Users = require("./user");
 
 /**
  * Sessions is a class with methods to interact with the sessions table, which
@@ -10,9 +10,8 @@ const Users = require('./user');
  */
 class Sessions extends Model {
   constructor() {
-    super('sessions');
+    super("sessions");
   }
-
   /**
    * Determines if a session is associated with a logged in user.
    * @params {Object} session - Session object (requires a user property)
@@ -33,16 +32,15 @@ class Sessions extends Model {
    * match the options, the promise will only be fulfilled with one.
    */
   get(options) {
-    return super.get.call(this, options)
-      .then(session => {
-        if (!session || !session.userId) {
-          return session;
-        }
-        return Users.get({ id: session.userId }).then(user => {
-          session.user = user;
-          return session;
-        });
+    return super.get.call(this, options).then(session => {
+      if (!session || !session.userId) {
+        return session;
+      }
+      return Users.get({ id: session.userId }).then(user => {
+        session.user = user;
+        return session;
       });
+    });
   }
 
   /**
@@ -50,10 +48,10 @@ class Sessions extends Model {
    * @returns {Promise<Object>} A promise that is fulfilled with the results of
    * an insert query or rejected with the error that occured.
    */
-  create() {
+  create(userId) {
     let data = utils.createRandom32String();
     let hash = utils.createHash(data);
-    return super.create.call(this, { hash });
+    return super.create.call(this, { hash, userId });
   }
 }
 
