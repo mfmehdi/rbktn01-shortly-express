@@ -5,7 +5,15 @@ const parseCookies = (req, res, next) => {
   // req.cookies = parsed;
   //console.log("---->   ", req.header);
   if (req.headers.cookie) {
-    console.log("req.headers ===>", req.headers.cookie.split("; "));
+    var arr = req.headers.cookie.split("; ");
+    var objOfCookies = {};
+    arr.forEach(cookie => {
+      var cookieObj = cookie.split("=");
+      objOfCookies[cookieObj[0]] = cookieObj[1];
+    });
+
+    console.log("req.headers ===>", objOfCookies);
+    req.cookies = objOfCookies;
   }
 };
 
